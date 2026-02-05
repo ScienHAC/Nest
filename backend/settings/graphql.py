@@ -48,5 +48,8 @@ schema = strawberry.Schema(
     mutation=Mutation,
     query=Query,
     extensions=[QueryDepthLimiter(max_depth=5), DjangoOptimizerExtension()],
-    config=StrawberryConfig(enable_introspection=settings.DEBUG),
+    config=StrawberryConfig(
+        enable_introspection=settings.DEBUG
+        or getattr(settings, "IS_FUZZ_ENVIRONMENT", False)
+    ),
 )
